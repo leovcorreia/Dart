@@ -1,0 +1,132 @@
+Para criar um novo projeto:
+dart create [nome]
+
+Ler entrada do usuário:
+   stdin.readLineSync();
+
+Interpolação (juntar string com variáveis):
+   print('Produto: ${smartphone.nomeProduto}, Quantidade em estoque: ${smartphone.quantidade}');
+   print("O saldo atual de $titular, é R\$$saldo");
+
+Imprimir números com casas decimais:
+   double numero = 1234.56789;
+   print(numero.toStringAsFixed(2));   // Saída: 1234.57
+
+String? categoria;    // O ? após String indica que a variável pode ser nula. Isso é parte do sistema de null safety
+
+Listas:
+- List<String> operacoes = <String>["+", "-"];   // declaração
+- print("Digite uma operação ${operacoes.toString()}");   // "toString retorna uma representação em string do objeto ao qual está sendo aplicado"
+- if (tipos.contains(tipo)) {    // Verifica se um dado está presente na lista ou não
+    return tipo;
+  } else {
+
+- for (tipoElemento elemento in colecaoDeDados) {
+  // Código a ser executado para cada elemento da coleção
+}
+
+POO:
+   Criar classes novas na pasta lib e depois importar
+- class Conta {
+     String titular;   // Atributos
+     double _saldo;
+     String _nome;   // Atributo privado (PRIVATE) para armazenar o nome
+
+     Conta(this.titular, this.saldo, this._nome);   // Construtor
+
+     void receber(double valor) {   // Métodos
+        saldo += valor;
+     }
+}
+- Herança: 
+class Cachorro extends Animal {
+  String cor;
+
+  Cachorro(this.cor, String nome): super(nome);
+  void latir() {
+    print('$nome está latindo.');
+  }
+}
+- Classe abstrata: abstract class Conta (classe que não pode ser instanciada)
+- Interface: 
+Define um contrato que outras classes devem seguir, mas não fornece implementação concreta. Ao implementar uma interface, você obriga a classe a implementar todos os métodos definidos na interface.
+Em Dart, classes abstratas podem ser usadas tanto para herança quanto para interfaces.
+abstract class Figura {
+  double calcularArea();    // 
+}
+
+class Circulo implements Figura {
+  double raio;
+
+  Circulo(this.raio);
+
+  @override
+  double calcularArea() {
+    return 3.14159 * raio * raio;
+  }
+}
+
+- Mixins: palavra 'with'
+É uma maneira de compartilhar código entre várias classes
+Use quando você quer adicionar funcionalidades comuns a várias classes sem criar uma relação de herança 
+Isso é útil quando você quer reutilizar comportamento em várias classes que não têm uma relação direta.
+	(por exemplo, várias classes podem usar um mixin Nadador para adicionar a capacidade de nadar)
+mixin Corrida {
+  void correr() {
+    print('Está correndo.');
+  }
+}
+
+class Cachorro with Corrida {}
+
+class Gato with Corrida {}
+
+void main() {
+  Cachorro cachorro = Cachorro();
+  cachorro.correr();  // Saída: Está correndo.
+
+  Gato gato = Gato();
+  gato.correr();  // Saída: Está correndo.
+}
+
+- ASSINCRONISMO:
+Biblioteca: É um conjunto de códigos prontos que oferece funcionalidades específicas que você pode reutilizar em seus projetos (dart:math)
+Pacotes: É uma coleção de bibliotecas, arquivos e recursos organizados em uma estrutura específica. 
+	Pacotes podem conter uma única biblioteca ou várias bibliotecas, além de documentação, exemplos e outros arquivos úteis.
+	São distribuídos através do pub.dev e podem ser facilmente adicionados ao seu projeto como dependências.
+	Existem pacotes para as mais diversas funcionalidades, como manipulação de JSON, integração com APIs, e até pacotes que fornecem widgets prontos para Flutter.
+	O pacote http, por exemplo, fornece bibliotecas que ajudam a fazer requisições HTTP em Dart.
+Plugins: São um tipo de pacote que permite que seu código Dart interaja com funcionalidades nativas do SO, como a câmera, GPS, ou sensores do dispositivo.
+	No Flutter, os plugins são importantes para acessar esses recursos em plataformas como Android e iOS.
+	Um exemplo bom seria um plugin de câmera que permite que você use, claro, a câmera do dispositivo em um aplicativo Flutter. Ele contém código Dart que se comunica com as APIs nativas da câmera no Android e iOS.
+Dependências: São bibliotecas externas que seu projeto precisa para funcionar corretamente.
+	Você adiciona ao seu projeto dependências que outras pessoas já criaram, economizando tempo e esforço.
+	Essas dependências também são gerenciadas pelo pub.dev, e você pode definí-las no seu projeto aa através do arquivo pubspec.yaml, e o Dart ou Flutter cuida de baixar e instalar essas dependências.
+	Ou seja, bibliotecas, pacotes e plugins que são externos ao seu código (e dos quais o seu código dependem) são considerados “dependências”.
+
+Pub: é o gerenciador de pacotes do Dart. Ele é responsável por baixar, instalar e gerenciar pacotes e dependências que seu projeto pode precisar. 
+	O comando pub gerencia os pacotes através de um arquivo de configuração chamado pubspec.yaml.
+	Exemplo: dart pub add http (inclui pacote http no seu projeto)
+	import 'package:http/http.dart';
+
+URI: Identifica de maneira geral qualquer recurso (engloba tanto URL quanto URN).
+	O pacote http do Dart, por exemplo, exige que as URLs sejam convertidas em objetos URI antes de serem usadas em requisições HTTP.
+	Isso garante que a URL esteja formatada e que a comunicação com o servidor seja confiável.
+	Exemplo: get(Uri.parse(url))   // Converte uma string 'url' em URI
+	Além de usar Uri.parse() para converter uma string em URI, você pode criar uma URI diretamente utilizando o construtor da classe Uri. Isso permite montar a URI especificando seus diferentes componentes de forma explícita.
+URL: Um tipo de URI que localiza um recurso na web e descreve como acessá-lo. (Protocolo, Host, Path; Opcionais - Query String, Fragmento)
+	https://www.exemplo.com/pagina/busca?produto=livro&preco=50#comentarios
+	Protocolo: https://   (Define como os dados são transmitidos)
+	Host: www.exemplo.com   (O endereço do servidor onde o recurso está)
+	Path: /pagina/busca     (Especifica a localização do recurso dentro do servidor)
+	Query String: ?produto=livro&preco=50    (Usados para passar informações adicionais ao servidor. Aparecem após um ponto de interrogação (?)
+	Fragmento: #comentarios                  (Aponta para uma seção específica de uma página. Aparece após uma hashtag (#)
+URN: Um tipo de URI que nomeia um recurso de maneira única, mas não fornece sua localização ou método de acesso.
+
+Assincronismo em Dart é a capacidade de executar operações que podem levar tempo para serem concluídas sem bloquear a execução do restante do código.
+Uma função assíncrona é uma função que pode realizar operações que levam tempo sem bloquear o restante do programa (async).
+Componentes principais do assincronismo em Dart: Future, async, await
+Future: representa um valor ou erro que estará disponível no futuro. Quando você executa uma função assíncrona, ela retorna um Future, que será resolvido (com um valor) ou rejeitado (com um erro) mais tarde.
+	Ele permite que você trabalhe com operações que demoram, como solicitações HTTP ou consultas a bancos de dados.
+Async: é usado para declarar que uma função será executada de forma assíncrona. Isso significa que ela pode conter código que será pausado enquanto espera a conclusão de uma operação de longa duração.
+Await: é usada dentro de funções marcadas como async. Ela diz ao programa para aguardar a conclusão de uma operação assíncrona (um Future), mas sem bloquear o restante do código.
