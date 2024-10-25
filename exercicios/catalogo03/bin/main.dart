@@ -6,36 +6,37 @@ void main() {
 
   print("Teste");
 
-  Map<String, dynamic> newProduct = {
-    "id" : 4,
-    "name" : "Computador",
-    "price" : 4000.00
-  };
+  List<Map<String, dynamic>> newProducts = [
+    {
+      "id": 5,
+      "name": "Teclado",
+      "price": 200.00
+    },
+    {
+      "id": 6,
+      "name": "Mouse",
+      "price": 100.00
+    }
+  ];
 
-  sendNewData(newProduct);
+  sendNewData(newProducts, "Periféricos");
 }
 
-sendNewData(Map<String, dynamic> newProduct) async {
+sendNewData(List<Map<String, dynamic>> newProducts, String nameList) async {
 
-  String url = "https://gist.githubusercontent.com/leovcorreia/7d995951139f3e35d02022ddaf623615/raw/6f7841d0674ada99b8ff9e0eec7fc4ab9ed3cea8/products.json";
-  
-  Response res = await get(Uri.parse(url));
+  Uri url = Uri.parse("https://api.github.com/gists/7d995951139f3e35d02022ddaf623615");
 
-  List<dynamic> listProducts = json.decode(res.body);
-  listProducts.add(newProduct);
-  String updatedProducts = json.encode(listProducts);
+  String content = json.encode(newProducts);
 
-  url = "https://api.github.com/gists/7d995951139f3e35d02022ddaf623615";
-
-  res = await post(
-    Uri.parse(url),
+  Response res = await post(
+    url,
       headers: {"Authorization" : "Bearer $apiKey"},
       body: json.encode({
-        "description" : "adicionando produto no products.json",
+        "description" : nameList,
         "public" : true,
         "files" : {
-          "products.json" : {
-            "content" : updatedProducts,
+          "${nameList.toLowerCase().replaceAll(" ", "")}.json" : {
+            "content" : content,
           }
         }
       }),
