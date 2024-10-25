@@ -1,16 +1,10 @@
 import 'package:http/http.dart';
 import 'dart:convert';
+import 'package:catalogo03/github_api_key.dart';
 
 void main() {
-  String responseBody = '''
-  [
-    {"id": 1, "name": "Celular", "price": 1200.75},
-    {"id": 2, "name": "Notebook", "price": 3500.10},
-    {"id": 3, "name": "Tablet", "price": 1500.00}
-  ]
-  ''';
 
-  List<dynamic> products = json.decode(responseBody);
+  print("Teste");
 
   Map<String, dynamic> newProduct = {
     "id" : 4,
@@ -18,10 +12,35 @@ void main() {
     "price" : 4000.00
   };
 
-  products.add(newProduct);
+  sendNewData(newProduct);
+}
 
-  String updatedProducts = json.encode(products);
+sendNewData(Map<String, dynamic> newProduct) async {
 
-  print(updatedProducts);
+  String url = "https://gist.githubusercontent.com/leovcorreia/7d995951139f3e35d02022ddaf623615/raw/6f7841d0674ada99b8ff9e0eec7fc4ab9ed3cea8/products.json";
+  
+  Response res = await get(Uri.parse(url));
+
+  List<dynamic> listProducts = json.decode(res.body);
+  listProducts.add(newProduct);
+  String updatedProducts = json.encode(listProducts);
+
+  url = "https://api.github.com/gists/7d995951139f3e35d02022ddaf623615";
+
+  res = await post(
+    Uri.parse(url),
+      headers: {"Authorization" : "Bearer $apiKey"},
+      body: json.encode({
+        "description" : "adicionando produto no products.json",
+        "public" : true,
+        "files" : {
+          "products.json" : {
+            "content" : updatedProducts,
+          }
+        }
+      }),
+  );
+
+  print(res.statusCode);
 
 }
